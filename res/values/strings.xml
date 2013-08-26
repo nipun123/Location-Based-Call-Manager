@@ -3,6 +3,8 @@
 
     <string name="app_name">LocationBasedCallManager</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="start">Start Service</string><string name="hello_world">Hello world!</string>
+    
+    <string name="stop">Stop Service</string>
 
 </resources>
