@@ -9,7 +9,10 @@
         android:targetSdkVersion="17" />
     
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>"
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
+    <uses-permission android:name="android.permission.READ_SMS"></uses-permission>
+    "
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -28,7 +31,21 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name="callhandler.CallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="smshandler.SmsReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
         <service android:name=".SupportService"
+            android:enabled="true"/>
+        <service android:name="callhandler.CallHandlingService"
+            android:enabled="true"/>
+        <service android:name="smshandler.SmsHandlingService"
             android:enabled="true"/>
     </application>
 

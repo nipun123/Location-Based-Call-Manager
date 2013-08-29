@@ -4,10 +4,12 @@ package com.example.locationbasedcallmanager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import locationhandler.LocationListner;
 
 public class MainActivity extends Activity {
 	
@@ -39,6 +41,11 @@ public class MainActivity extends Activity {
 				
 				Intent intent = new Intent(getApplicationContext(),SupportService.class);
 				stopService(intent );
+				Log.v("running comes here","upto this correct");
+				Intent locIntent= new Intent(getApplicationContext(),LocationListner.class);
+				startActivity(locIntent);
+				
+				
 				
 			}});
 	}
