@@ -7,12 +7,25 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
-    
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>"
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
-    <uses-permission android:name="android.permission.READ_SMS"></uses-permission>
-    "
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" >
+    </uses-permission>
+"
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"></uses-permission>
+"
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_SMS" >
+    </uses-permission>
+    "
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -22,31 +35,54 @@
             android:name="com.example.locationbasedcallmanager.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />      
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".AutoStart">
+
+        <receiver android:name="com.example.locationbasedcallmanager.AutoStart" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="callhandler.CallReceiver">
+        <receiver android:name="callhandler.CallReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="smshandler.SmsReceiver">
+        <receiver android:name="smshandler.SmsReceiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-        <service android:name=".SupportService"
-            android:enabled="true"/>
-        <service android:name="callhandler.CallHandlingService"
-            android:enabled="true"/>
-        <service android:name="smshandler.SmsHandlingService"
-            android:enabled="true"/>
+
+        <service
+            android:name="com.example.locationbasedcallmanager.SupportService"
+            android:enabled="true" />
+        <service
+            android:name="callhandler.CallHandlingService"
+            android:enabled="true" />
+        <service
+            android:name="smshandler.SmsHandlingService"
+            android:enabled="true" />
+
+        <activity
+            android:name="com.example.locationbasedcallmanager.AddProfile"
+            android:label="@string/title_activity_add_profile" >
+        </activity>
+        <activity
+            android:name="com.example.locationbasedcallmanager.AddLocation"
+            android:label="@string/title_activity_add_location" >
+        </activity>
+        <activity
+            android:name="com.example.locationbasedcallmanager.EditLocation"
+            android:label="@string/title_activity_edit_location" >
+        </activity>
+        <activity
+            android:name="locationhandler.LocationListner"
+            android:label="@string/title_activity_location_listner" >
+        </activity>
     </application>
 
 </manifest>
