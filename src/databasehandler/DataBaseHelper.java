@@ -2,6 +2,7 @@ package databasehandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,10 +15,11 @@ import android.util.Log;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
 	public static final String LOGCAT = null;
+	public static DataBaseHelper helper;
 
-	public static final String dbName = "temp";
+	public static final String dbName = "callmanager";            // database name
 
-	public static final String profileTable = "Profiles";
+	public static final String profileTable = "Profiles";           // location profiles attributes
 	public static final String profileName = "Name";
 	public static final String latitude = "Latitude";
 	public static final String longitude = "Longitude";
@@ -27,27 +29,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	public static final String forwarding_number = "ForwardingNumber";
 	public static final String auto_message = "AutoMessage";
 
-	public static final String contactTable = "Contacts";
+	public static final String contactTable = "Contacts";           // contact details
 	public static final String contactName = "Name";
 	public static final String contactNumber = "Number";
 	public static final String profile_allowed = "Profile";
 
 	public DataBaseHelper(Context applicationContext) {
 		super(applicationContext, dbName + ".db", null, 1);
-		this.getWritableDatabase();
+		this.getWritableDatabase();                                 // at the creation get a database instance
 		Log.v(LOGCAT, "created");
 	}
 
-	private SQLiteDatabase open() throws SQLException {
+	public static DataBaseHelper getInstance(Context context) {     // get the
+																    // DataBaseHandler
+																    // instance
+		if (helper == null) {
+			helper = new DataBaseHelper(context);
+		}
+		return helper;
+	}
+
+	private SQLiteDatabase open() throws SQLException {             // get the database
+														            // instance
 		return this.getWritableDatabase();
 
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase database) {
+	public void onCreate(SQLiteDatabase database) {                              // create two tables for
+													                             // profiles and contacts
 		String query;
 		query = "CREATE TABLE Profiles (Name TEXT PRIMARY KEY, Latitude "
-				+ "INTEGER,Longitude INTEGER,BlockState BOOLEAN,Volume INTEGER, VolumeState BOOLEAN,"
+				+ "REAL,Longitude REAL,BlockState BOOLEAN,Volume INTEGER, VolumeState BOOLEAN,"
 				+ "ForwardingNumber TEXT,AutoMessage TEXT)";
 		database.execSQL(query);
 		query = "CREATE TABLE Contacts(Number TEXT,Profile TEXT,Name TEXT,"
@@ -58,7 +71,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase database, int arg1, int arg2) {
+	public void onUpgrade(SQLiteDatabase database, int arg1, int arg2) {         // call   before oncreate method if profile and contacts tables exists avoid creating tables
+																																				
 		String query1, query2;
 		query1 = "DROP TABLE IF EXIST Profiles";
 		query2 = "DROP TABLE IF EXIST Contacts";
@@ -69,7 +83,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	}
 
-	public boolean addProfile(String name, int latitudeValue, int longitudeValue) {
+	public boolean addProfile(String name,
+			double latitudeValue, // add a new profile to database
+			double longitudeValue, String forwardingNumber, String autoMessage,
+			int volumelevel, boolean blockingstate, boolean volumeChaneState) {
 
 		SQLiteDatabase database = open();
 		ContentValues values = new ContentValues();
@@ -77,6 +94,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		values.put(profileName, name);
 		values.put(latitude, latitudeValue);
 		values.put(longitude, longitudeValue);
+		values.put(forwarding_number, forwardingNumber);
+		values.put(ringing_Volume, volumelevel);
+		values.put(auto_message, autoMessage);
+		values.put(blockingState, blockingstate);
+		values.put(volume_Control_State, volumeChaneState);
 
 		result = database.insert(profileTable, null, values);
 		database.close();
@@ -87,7 +109,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			return true;
 	}
 
-	public boolean addContact(String number, String profile_name, String name) {
+	public boolean addContact(String number, String profile_name, String name) {             // add a new contact
+																					
 		SQLiteDatabase database = open();
 		ContentValues values = new ContentValues();
 		long result;
@@ -104,7 +127,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			return true;
 	}
 
-	public ArrayList<HashMap<String, String>> getAllProfiles() {
+	public ArrayList<HashMap<String, String>> getAllProfiles() {                            // get details of allprofiles
 		ArrayList<HashMap<String, String>> wordList = new ArrayList<HashMap<String, String>>();
 		String selectQuery = "SELECT * FROM Profiles";
 		SQLiteDatabase database = open();
@@ -128,8 +151,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return wordList;
 	}
 
-	public ArrayList<HashMap<String, String>> getAllAlloedContacts(
+	public ArrayList<HashMap<String, String>> getAllAllowedContacts(                // get details of all contacts in a profile white box
 			String profileName) {
+		
 		ArrayList<HashMap<String, String>> wordList = new ArrayList<HashMap<String, String>>();
 		String selectQuery = "SELECT * FROM Contacts WHERE Profile='"
 				+ profileName + "' ";
@@ -148,13 +172,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return wordList;
 	}
 
-	public HashMap<String, String> getProfileInfo(String profileName) {
+	public HashMap<String, String> getProfileInfo(String profileName) {               // get all details of a profile
 		HashMap<String, String> wordList = new HashMap<String, String>();
 		SQLiteDatabase database = open();
+		
 		String selectQuery = "SELECT * FROM Profiles WHERE Name='"
 				+ profileName + "'";
 		Cursor cursor = database.rawQuery(selectQuery, null);
 
+		
 		if (cursor.moveToFirst()) {
 			wordList.put(latitude, cursor.getString(1));
 			wordList.put(longitude, cursor.getString(2));
@@ -168,7 +194,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return wordList;
 	}
 
-	public HashMap<String, String> getContactInfo(String Number, String profile) {
+	public HashMap<String, String> getContactInfo(String Number, String profile) {             // get details of a given contact number
+		
 		HashMap<String, String> wordList = new HashMap<String, String>();
 		SQLiteDatabase database = open();
 		String selectQuery = "SELECT * FROM Contacts WHERE Number='" + Number
@@ -183,7 +210,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return wordList;
 	}
 
-	public boolean updateProfileName(String previousName, String newName) {
+	public boolean updateProfileName(String previousName, String newName) {                  // change profile name when location given
 		SQLiteDatabase database = open();
 		ContentValues values = new ContentValues();
 		String[] select = { previousName };
@@ -199,7 +226,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	}
 
-	public boolean updateProfilePosition(String profile, double lat, double lon) {
+	public boolean updateProfilePosition(String profile, double lat, double lon) {            // change position of a given location name
 		SQLiteDatabase database = open();
 		ContentValues values = new ContentValues();
 		String[] select = { profile };
@@ -216,7 +243,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	}
 
-	public boolean updateRingingVolume(String profile, int Volume) {
+	public boolean updateRingingVolume(String profile, int Volume) {                         // update ringing volume of a profile
 		SQLiteDatabase database = open();
 		ContentValues values = new ContentValues();
 		String[] select = { profile };
@@ -232,7 +259,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	}
 
-	public boolean updateAutoSendmessage(String profile, String Message) {
+	public boolean updateAutoSendmessage(String profile, String Message) {                  // change send message of a profile
 		SQLiteDatabase database = open();
 		ContentValues values = new ContentValues();
 		String[] select = { profile };
@@ -248,7 +275,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	}
 
-	public boolean updateCallBlockState(String profile, boolean state) {
+	public boolean updateCallBlockState(String profile, boolean state) {                   // change callblocking state of a profile
 		SQLiteDatabase database = open();
 		ContentValues values = new ContentValues();
 		String[] select = { profile };
@@ -264,7 +291,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	}
 
-	public boolean updateVolumeControlState(String profile, boolean state) {
+	public boolean updateVolumeControlState(String profile, boolean state) {                // update volume control state of a profile
 		SQLiteDatabase database = open();
 		ContentValues values = new ContentValues();
 		String[] select = { profile };
@@ -280,7 +307,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	}
 
-	public void deleteContact(String Number, String Profile) {
+	public void deleteContact(String Number, String Profile) {                               // delete acontact
 		SQLiteDatabase database = open();
 		String deleteQuery = "DELETE FROM Contacts WHERE Number='" + Number
 				+ "' AND Profile='" + Profile + "'";
@@ -298,17 +325,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		database.close();
 	}
 
-	public String getProfileNameFromcordinates(int latitude, int longitude) {
-		int upLatlimit, downLatLimit, leftLonLimit, rightLonLimit, lat, lon;
+	public String getProfileNameFromcordinates(double latitude, double longitude) {          // get the most likely location for a given cordinates
+		double upLatlimit, downLatLimit, leftLonLimit, rightLonLimit, lat, lon;
 		double distance;
 		String profileName, selectedName = "";
-		upLatlimit = latitude + 2;
-		downLatLimit = latitude - 2;
-		leftLonLimit = longitude - 2;
-		rightLonLimit = longitude + 2;
+		upLatlimit = latitude + 1;
+		downLatLimit = latitude - 1;
+		leftLonLimit = longitude - 1;
+		rightLonLimit = longitude + 1;
 
 		SQLiteDatabase database = open();
-		System.out.println("start to find name");
+		System.out.println("start to find name from latitude= " + latitude
+				+ " longitude= " + longitude);
 
 		String selectQuery = "SELECT Name,Latitude,Longitude FROM Profiles WHERE "
 				+ "Latitude <="
@@ -316,9 +344,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 				+ " AND Latitude >="
 				+ downLatLimit
 				+ " AND"
-				+ " Longitude <= "
+				+ " Longitude >= "
 				+ leftLonLimit
-				+ " AND Longitude >= " + rightLonLimit;
+				+ " AND Longitude <= " + rightLonLimit;
 
 		Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -326,12 +354,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				profileName = cursor.getString(0);
-				lat = Integer.parseInt(cursor.getString(1));
-				lon = Integer.parseInt(cursor.getString(2));
+				lat = Double.parseDouble(cursor.getString(1));
+				lon = Double.parseDouble(cursor.getString(2));
 				System.out.println(profileName + " " + lat + " " + lon);
 
-				int latgap = latitude - lat;
-				int longap = longitude - lon;
+				double latgap = latitude - lat;
+				double longap = longitude - lon;
 				double gap = Math.sqrt((latgap * latgap) + (longap * longap));
 
 				if (gap < distance) {
@@ -343,8 +371,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 		}
 		database.close();
+		Log.v("", "selected location name= " + selectedName);
 		return selectedName;
 
+	}
+
+	public boolean checkContactAllowed(String number, String profileName) {                    // check a contact is allowed in a given locatiion
+		ArrayList<HashMap<String, String>> contacts = getAllAllowedContacts(profileName);
+		Iterator<HashMap<String, String>> iterator = contacts.iterator();
+		HashMap<String, String> map = null;
+		String temp;
+		boolean contain = false;
+
+		while (iterator.hasNext()) {
+			map = iterator.next();
+			temp = map.get(contactNumber);
+			if (temp.equals(number)) {
+				contain = true;
+			}
+		}
+
+		return contain;
 	}
 
 	public void deleteTables() {

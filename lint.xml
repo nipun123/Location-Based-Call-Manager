@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi">
+        <ignore path="src/com/example/locationbasedcallmanager/LocationSelection.java" />
+        <ignore path="src/com/example/locationbasedcallmanager/MainActivity.java" />
+        <ignore path="src/smshandler/MailClient.java" />
+    </issue>
+    <issue id="TextFields">
+        <ignore path="res/layout/activity_add_location.xml" />
+    </issue>
+</lint>

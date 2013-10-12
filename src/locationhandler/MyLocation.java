@@ -2,15 +2,23 @@ package locationhandler;
 
 public class MyLocation {
 
-	public double latitude;
-	public double longitude;
+	public double latitude=10.00;
+	public double longitude=10.00;
 	public static MyLocation location;
 
 	public static MyLocation getInstance() {
-		if (location == null) {
-			location = new MyLocation();
+		if(location==null)
+		{
+			location=new MyLocation();
+			return location;
 		}
-		return location;
+		else
+		    return location;
+	}
+	
+	public MyLocation()
+	{
+		location=this;
 	}
 
 	public void setLatitude(double lati) {

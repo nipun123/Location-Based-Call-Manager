@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 public class LocationReader {
@@ -15,24 +16,33 @@ public class LocationReader {
 	private Context context;
 	private String provider;
 	LocationManager locationManager;
-	MyLocation location;
+	public MyLocation location;
+	public static LocationReader reader;
 	
+	public static LocationReader getInstance(Context context)                        // get a instance of locationreader
+	{
+		if(reader==null)
+		{
+			reader=new LocationReader(context);
+		}
+		return reader;
+	}
 
 	public LocationReader(Context context) {
-		this.context = context;
-		location = MyLocation.getInstance();
+		this.context = context; 
+		this.location= new MyLocation();
 		LocListner locList = new LocListner();
-		locationManager = (LocationManager) context
+		locationManager = (LocationManager) context                                 // get the location manager
 				.getSystemService(Context.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,     // request location updates on loclist locationlistner
 				0, locList);
 		Location loca = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		updateLocation(loca);
-		
 	}
 	
-	public void turnGPSOn()
+	
+	public void turnGPSOn()                                                          // turn on GPS
 	{
 		String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
         if(!provider.contains("gps")){
@@ -47,7 +57,7 @@ public class LocationReader {
 				Toast.LENGTH_SHORT).show();
 	}
 	
-	public void turnGPSOff()
+	public void turnGPSOff()                                                            // turn off GPS
 	{
 		  String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 	        if(provider.contains("gps")){
@@ -62,16 +72,17 @@ public class LocationReader {
 					Toast.LENGTH_SHORT).show();
 	}
 
-	public void updateLocation(Location location) {
+	public void updateLocation(Location loca) {                                          // update Mylocation object when new locationupdates come
 		String latLongString;
 
-		if (location != null) {
-			double lat = location.getLatitude();
-			double lng = location.getLongitude();
+		if (loca != null) {
+			double lat = loca.getLatitude();
+			double lng = loca.getLongitude();
 			
 			location.setLatitude(lat);
 			location.setLongitude(lng);
 			latLongString = "Lat:" + lat + "\nLong:" + lng;
+			Log.v("","updated location lati="+location.getLatitude()+" long= "+location.getLongitude());
 		} else {
 			latLongString = "No Location";
 		}
@@ -80,11 +91,25 @@ public class LocationReader {
 				latLongString,
 				Toast.LENGTH_SHORT).show();
 	}
+	
+	public MyLocation getLocation()                                                     // get the MyLocation object 
+	{
+		Location loca = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (loca != null) {
+			double lat = loca.getLatitude();
+			double lng = loca.getLongitude();
+			
+			location.setLatitude(lat);
+			location.setLongitude(lng);
+			Log.v("","latitude= "+lat+" longitude= "+lng);
+		}
+		return location;
+	}
 
-	public class LocListner implements LocationListener {
+	private class LocListner implements LocationListener {                             // create private class from locationListner                 
 
 		@Override
-		public void onLocationChanged(Location location) {		
+		public void onLocationChanged(Location location) {	
 			updateLocation(location);
 		}
 
@@ -94,6 +119,7 @@ public class LocationReader {
 					Toast.LENGTH_SHORT).show();
 
 		}
+
 
 		@Override
 		public void onProviderEnabled(String arg0) {

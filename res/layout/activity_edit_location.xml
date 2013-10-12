@@ -8,121 +8,140 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".EditLocation" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Location"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <Button
+        android:id="@+id/backbuton"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/deletebutton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/savechange"
+        android:text="@string/back"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/deletebutton"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_above="@+id/backbuton"
+        android:layout_alignLeft="@+id/savechange"
+        android:layout_alignRight="@+id/savechange"
+        android:text="@string/delete_location"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/savechange"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:layout_above="@+id/deletebutton"
+        android:layout_centerHorizontal="true"
+        android:text="@string/save_changes"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="22dp"
-        android:text="New Latitude"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginLeft="32dp"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
+        android:layout_above="@+id/forward"
+        android:text="@string/forwarding_number" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/lon"
         android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/editText1"
-        android:layout_marginTop="21dp"
-        android:text="New Longitude"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:text="@string/new_longitude" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:inputType="text"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/lon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView2"
+        android:layout_alignLeft="@+id/forward"
+        android:inputType="text"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/lati"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView3"
+        android:layout_alignLeft="@+id/lon"
+        android:inputType="text"
         android:ems="10" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/change_volume"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button3"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/button2"
-        android:text="Back"
-        android:textSize="13dp" />
+        android:layout_height="40dp"
+        android:layout_below="@+id/forward"
+        android:layout_toRightOf="@+id/textView2"
+        android:text="@string/change_volume"
+        android:textSize="12sp" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/auto_message"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignRight="@+id/textView2"
+        android:layout_alignTop="@+id/change_volume"
+        android:text="@string/auto_message"
+        android:textSize="12sp" />
+
+    <CheckBox
+        android:id="@+id/call_block"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/savechange"
+        android:layout_alignLeft="@+id/auto_message"
+        android:text="@string/block_call"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lati"
         android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/editText2"
-        android:text="Chane Auto Reply Message"
-        android:layout_marginTop="10dp"
-        android:textSize="10dp" />
+        android:text="@string/new_latitude" />
 
-    <Button
-        android:id="@+id/button5"
+    <EditText
+        android:id="@+id/profilename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
+        android:layout_above="@+id/textView4"
+        android:layout_alignLeft="@+id/lati"
+        android:ems="10"
+        android:inputType="text" />
+
+    <CheckBox
+        android:id="@+id/volume_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/call_block"
+        android:layout_alignBottom="@+id/call_block"
         android:layout_alignParentRight="true"
-        android:text="Change Ringing Volume"
-        android:textSize="10dp" />
+        android:text="@string/change_volume"
+        android:textSize="12sp" />
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/checkBox1"
-        android:layout_alignBottom="@+id/checkBox1"
-        android:layout_alignLeft="@+id/button5"
-        android:textSize="13dp"
-        android:text="CheckBox" />
-
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="14dp"
-        android:text="Block Calls"
-        android:textSize="13dp" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button4"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_alignRight="@+id/button2"
-        android:text="Delete Location"
-        android:textSize="13dp" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button3"
-        android:layout_centerHorizontal="true"
-        android:text="Save Changes"
-        android:textSize="13dp" />
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignParentTop="true"
+        android:text="@string/edit_location" />
 
 </RelativeLayout>

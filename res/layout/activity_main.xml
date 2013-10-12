@@ -8,104 +8,114 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <EditText
+    <TextView
         android:id="@+id/contact_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/contact_name"
-        android:layout_below="@+id/textView1"
-        android:ems="10" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/select_contact"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
-        android:id="@+id/contact_name"
+        android:id="@+id/contact_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/add_contact"
-        android:layout_below="@+id/textView5"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@+id/contactlist"
         android:layout_below="@+id/contact_name"
-        android:text="Enter Location Name"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:ems="10" 
+        android:inputType="text">
+    </EditText>
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignLeft="@+id/contact_name"
+        android:layout_below="@+id/contact_num"
+        android:text="@string/enter_number"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/contact_number"
         android:layout_below="@+id/contact_number"
-        android:text="Enter Name"
+        android:layout_marginTop="14dp"
+        android:text="@string/enter_contact"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="16dp"
-        android:text="Enter Contact Number"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignParentTop="true"
-        android:text="Select a Contact you want to allowed"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <EditText
-        android:id="@+id/location_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/textView2"
-        android:layout_below="@+id/textView3"
-        android:ems="10" />
-
-    <Button
-        android:id="@+id/editlocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/location"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/location"
-        android:text="Edit Location" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/location_name"
-        android:layout_below="@+id/location_name"
-        android:layout_marginTop="20dp"
-        android:text="Select the Location Name Where you want to allow the contact"
+        android:layout_alignLeft="@+id/location_spinner"
+        android:layout_below="@+id/location_spinner"
+        android:layout_marginTop="14dp"
+        android:text="@string/select_location"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Button
-        android:id="@+id/location"
+    <TextView
+        android:id="@+id/location_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editlocation"
-        android:layout_centerHorizontal="true"
-        android:text="Add New Location" />
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_below="@+id/contactlist"
+        android:text="@string/enter_location"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <Button
         android:id="@+id/add_contact"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/location"
+        android:layout_height="40dp"
         android:layout_alignLeft="@+id/location"
         android:layout_alignRight="@+id/location"
-        android:text="Add Contact" />
-        
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="14dp"
+        android:text="@string/add_contact" />
+
+    <Button
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/add_contact"
+        android:layout_centerHorizontal="true"
+        android:text="@string/add_location" />
+
+    <Button
+        android:id="@+id/editlocation"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/location"
+        android:layout_alignRight="@+id/location"
+        android:layout_below="@+id/location"
+        android:text="@string/edit_location" />
+
+    <Spinner
+        android:id="@+id/location_spinner"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/location_name"
+        android:layout_centerHorizontal="true" />
+
+    <AutoCompleteTextView
+        android:id="@+id/contactlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/location"
+        android:layout_below="@+id/textView5"
+        android:clickable="true"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/allowed"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/editlocation"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/editlocation"
+        android:layout_marginTop="20dp"
+        android:text="@string/allowed_contacts" />
+
 </RelativeLayout>
